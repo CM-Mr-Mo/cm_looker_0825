@@ -18,3 +18,18 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 #     sql_on: ${users.id} = ${orders.user_id} ;;
 #   }
 # }
+
+explore: order_items {
+  label: "オーダー、ユーザー関連"
+  view_label: "オーダー"
+  always_filter: {
+    filters: [created_date: "last 90 days"]
+  }
+
+  join: users {
+    view_label: "ユーザー"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${order_items.user_id} = ${users.id} ;;
+  }
+}
